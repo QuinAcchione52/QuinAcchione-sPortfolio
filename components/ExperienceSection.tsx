@@ -21,6 +21,8 @@ interface Experience {
 
 export default function ExperienceSection() {
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
+  const [showAllImages, setShowAllImages] = useState(false);
+  const [expandedImageIndex, setExpandedImageIndex] = useState<number | null>(null);
 
   const experiences: Experience[] = [
     {
@@ -141,7 +143,7 @@ export default function ExperienceSection() {
         "Integrated multispectral optical imager into CubeSat payload architecture"
       ],
       technologies: ["UAS Design", "Autonomous Flight Systems", "CubeSat Engineering", "Payload Integration", "Multispectral Imaging", "Systems Engineering"],
-      images: ["/projects/phemotron-1.jpg", "/projects/phemotron-2.jpg", "/projects/phemotron-3.jpg", "/projects/phemotron-4.jpg", "/projects/phemotron-5.jpg", "/projects/phemotron-6.jpg", "/projects/phemotron-7.jpg", "/projects/phemotron-8.jpg"],
+      images: ["/projects/phemotron-1.jpg", "/projects/phemotron-3.jpg", "/projects/phemotron-7.jpg", "/projects/phemotron-4.jpg", "/projects/phemotron-5.jpg", "/projects/phemotron-6.jpg", "/projects/phemotron-2.jpg", "/projects/phemotron-8.jpg"],
       detailedDescription: "Served as Lead Drone Developmental Engineer Intern at Phemotron Systems, overseeing the design and manufacturing of custom Unmanned Aerial Systems (UAS) tailored for applications in surveillance, mapping, delivery, and other advanced autonomous flight operations. Simultaneously supported the payload subsystem for the AI-MotherBox-1 CubeSat, specifically focused on the integration and performance optimization of its multispectral optical imager. This dual-role position bridged aerospace vehicle development across both atmospheric and space domains.",
       challenges: [
         "Balancing requirements for multiple UAS platforms with diverse mission profiles",
@@ -307,7 +309,11 @@ export default function ExperienceSection() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
-              onClick={() => setSelectedExperience(null)}
+              onClick={() => {
+                setSelectedExperience(null);
+                setShowAllImages(false);
+                setExpandedImageIndex(null);
+              }}
             >
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -319,7 +325,11 @@ export default function ExperienceSection() {
               >
                 {/* Close button */}
                 <button
-                  onClick={() => setSelectedExperience(null)}
+                  onClick={() => {
+                    setSelectedExperience(null);
+                    setShowAllImages(false);
+                    setExpandedImageIndex(null);
+                  }}
                   className="absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 flex items-center justify-center transition-all z-10"
                 >
                   <span className="text-xl sm:text-2xl text-gray-700 dark:text-gray-300">×</span>
@@ -327,12 +337,16 @@ export default function ExperienceSection() {
 
                 {/* Image Gallery */}
                 {selectedExperience.images.length > 0 && (
-                  <div className="relative h-48 sm:h-72 bg-gradient-to-br from-purple-500 to-blue-500 rounded-t-2xl sm:rounded-t-3xl overflow-hidden">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-2 sm:p-4 h-full">
-                      {selectedExperience.images.map((img, idx) => (
+                  <div className="relative bg-gradient-to-br from-purple-500 to-blue-500 rounded-t-2xl sm:rounded-t-3xl overflow-hidden">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-2 sm:p-4">
+                      {(showAllImages ? selectedExperience.images : selectedExperience.images.slice(0, 3)).map((img, idx) => (
                         <div
                           key={idx}
-                          className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setExpandedImageIndex(idx);
+                          }}
+                          className="relative bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden h-32 sm:h-48 cursor-pointer hover:scale-105 transition-transform"
                         >
                           <img
                             src={img}
@@ -345,6 +359,36 @@ export default function ExperienceSection() {
                         </div>
                       ))}
                     </div>
+                    
+                    {/* See More Button */}
+                    {selectedExperience.images.length > 3 && !showAllImages && (
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 flex justify-center">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowAllImages(true);
+                          }}
+                          className="px-6 py-2 bg-white/90 dark:bg-gray-800/90 text-gray-900 dark:text-white rounded-full font-semibold text-sm hover:bg-white dark:hover:bg-gray-800 transition-all shadow-lg backdrop-blur-sm"
+                        >
+                          See More ({selectedExperience.images.length - 3} more photos)
+                        </button>
+                      </div>
+                    )}
+                    
+                    {/* Show Less Button */}
+                    {showAllImages && selectedExperience.images.length > 3 && (
+                      <div className="p-4 flex justify-center border-t border-purple-400/30">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowAllImages(false);
+                          }}
+                          className="px-6 py-2 bg-white/90 dark:bg-gray-800/90 text-gray-900 dark:text-white rounded-full font-semibold text-sm hover:bg-white dark:hover:bg-gray-800 transition-all shadow-lg"
+                        >
+                          Show Less
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -487,6 +531,79 @@ export default function ExperienceSection() {
                   )}
                 </div>
               </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Full-Screen Image Viewer */}
+        <AnimatePresence>
+          {expandedImageIndex !== null && selectedExperience && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setExpandedImageIndex(null)}
+              className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4"
+            >
+              <button
+                onClick={() => setExpandedImageIndex(null)}
+                className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
+                aria-label="Close image viewer"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Previous Button */}
+              {expandedImageIndex > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedImageIndex(expandedImageIndex - 1);
+                  }}
+                  className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10"
+                  aria-label="Previous image"
+                >
+                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Next Button */}
+              {expandedImageIndex < selectedExperience.images.length - 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedImageIndex(expandedImageIndex + 1);
+                  }}
+                  className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10"
+                  aria-label="Next image"
+                >
+                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Image */}
+              <motion.img
+                key={expandedImageIndex}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+                src={selectedExperience.images[expandedImageIndex]}
+                alt={`${selectedExperience.title} ${expandedImageIndex + 1}`}
+                className="max-w-full max-h-full object-contain"
+              />
+
+              {/* Image Counter */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2 rounded-full">
+                {expandedImageIndex + 1} / {selectedExperience.images.length}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

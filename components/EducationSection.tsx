@@ -17,6 +17,7 @@ interface Achievement {
 
 export default function EducationSection() {
   const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
+  const [expandedImageIndex, setExpandedImageIndex] = useState<number | null>(null);
 
   const achievements: Achievement[] = [
     {
@@ -202,7 +203,10 @@ export default function EducationSection() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
-              onClick={() => setSelectedAchievement(null)}
+              onClick={() => {
+                setSelectedAchievement(null);
+                setExpandedImageIndex(null);
+              }}
             >
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -214,7 +218,10 @@ export default function EducationSection() {
               >
                 {/* Close button */}
                 <button
-                  onClick={() => setSelectedAchievement(null)}
+                  onClick={() => {
+                    setSelectedAchievement(null);
+                    setExpandedImageIndex(null);
+                  }}
                   className="absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 flex items-center justify-center transition-all z-10"
                 >
                   <span className="text-xl sm:text-2xl text-gray-700 dark:text-gray-300">×</span>
@@ -265,7 +272,14 @@ export default function EducationSection() {
                       </h4>
                       <div className="space-y-4">
                         {selectedAchievement.images.map((img, idx) => (
-                          <div key={idx} className="bg-gradient-to-br from-blue-500 to-purple-600 p-1 rounded-2xl">
+                          <div 
+                            key={idx} 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedImageIndex(idx);
+                            }}
+                            className="bg-gradient-to-br from-blue-500 to-purple-600 p-1 rounded-2xl cursor-pointer hover:scale-105 transition-transform"
+                          >
                             <div className="bg-white dark:bg-gray-800 rounded-2xl p-4">
                               <img
                                 src={img}
@@ -283,6 +297,79 @@ export default function EducationSection() {
                   )}
                 </div>
               </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Full-Screen Image Viewer */}
+        <AnimatePresence>
+          {expandedImageIndex !== null && selectedAchievement && selectedAchievement.images && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setExpandedImageIndex(null)}
+              className="fixed inset-0 bg-black/95 z-[9999] flex items-center justify-center p-4"
+            >
+              <button
+                onClick={() => setExpandedImageIndex(null)}
+                className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
+                aria-label="Close image viewer"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Previous Button */}
+              {expandedImageIndex > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedImageIndex(expandedImageIndex - 1);
+                  }}
+                  className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10"
+                  aria-label="Previous image"
+                >
+                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Next Button */}
+              {expandedImageIndex < selectedAchievement.images.length - 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedImageIndex(expandedImageIndex + 1);
+                  }}
+                  className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10"
+                  aria-label="Next image"
+                >
+                  <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Image */}
+              <motion.img
+                key={expandedImageIndex}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+                src={selectedAchievement.images[expandedImageIndex]}
+                alt={`${selectedAchievement.title} ${expandedImageIndex + 1}`}
+                className="max-w-full max-h-full object-contain"
+              />
+
+              {/* Image Counter */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2 rounded-full">
+                {expandedImageIndex + 1} / {selectedAchievement.images.length}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
