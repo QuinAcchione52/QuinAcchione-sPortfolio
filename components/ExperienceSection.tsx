@@ -141,7 +141,7 @@ export default function ExperienceSection() {
         "Integrated multispectral optical imager into CubeSat payload architecture"
       ],
       technologies: ["UAS Design", "Autonomous Flight Systems", "CubeSat Engineering", "Payload Integration", "Multispectral Imaging", "Systems Engineering"],
-      images: [],
+      images: ["/projects/phemotron-1.jpg", "/projects/phemotron-2.jpg"],
       detailedDescription: "Served as Lead Drone Developmental Engineer Intern at Phemotron Systems, overseeing the design and manufacturing of custom Unmanned Aerial Systems (UAS) tailored for applications in surveillance, mapping, delivery, and other advanced autonomous flight operations. Simultaneously supported the payload subsystem for the AI-MotherBox-1 CubeSat, specifically focused on the integration and performance optimization of its multispectral optical imager. This dual-role position bridged aerospace vehicle development across both atmospheric and space domains.",
       challenges: [
         "Balancing requirements for multiple UAS platforms with diverse mission profiles",
