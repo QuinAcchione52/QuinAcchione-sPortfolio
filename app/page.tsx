@@ -6,6 +6,7 @@ import ContactSection from "@/components/ContactSection";
 import EducationSection from "@/components/EducationSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import ResumeSection from "@/components/ResumeSection";
+import SkillsSection from "@/components/SkillsSection";
 import { motion } from "framer-motion";
 
 export default function Home() {
@@ -36,6 +37,7 @@ export default function Home() {
       <ResumeSection />
       <ExperienceSection />
       <EducationSection />
+      <SkillsSection />
       <ContactSection />
     </main>
   );

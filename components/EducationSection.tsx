@@ -136,7 +136,7 @@ export default function EducationSection() {
             >
               <div 
                 onClick={() => setSelectedAchievement(achievement)}
-                className="h-full bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-800 hover:scale-105 hover:-translate-y-2 cursor-pointer"
+                className="h-full bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-800 hover:scale-105 hover:-translate-y-2 cursor-pointer hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-blue-500/20"
               >
                 {/* Icon Circle */}
                 <div className="mb-3 sm:mb-4 flex items-center justify-between">

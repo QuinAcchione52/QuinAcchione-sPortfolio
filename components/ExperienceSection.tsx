@@ -235,7 +235,7 @@ export default function ExperienceSection() {
                 <div className={`w-full md:w-5/12 ${index % 2 === 0 ? "md:pr-8" : "md:pl-8"}`}>
                   <div 
                     onClick={() => setSelectedExperience(exp)}
-                    className="group relative bg-gray-50 dark:bg-gray-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-800 hover:scale-105 cursor-pointer"
+                    className="group relative bg-gray-50 dark:bg-gray-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-800 hover:scale-105 cursor-pointer hover:border-purple-500/50 dark:hover:border-purple-500/50 hover:shadow-purple-500/20"
                   >
                     {/* Type Badge */}
                     <div className="flex items-center justify-between mb-4">
