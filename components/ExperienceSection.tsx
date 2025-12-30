@@ -203,7 +203,7 @@ export default function ExperienceSection() {
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.3 }}
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 text-center bg-gradient-to-r from-purple-500 to-indigo-600 bg-clip-text text-transparent">
@@ -225,7 +225,7 @@ export default function ExperienceSection() {
                 key={exp.id}
                 initial={{ opacity: 0, x: 0 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
                 viewport={{ once: true }}
                 className={`relative flex items-center ${
                   index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
