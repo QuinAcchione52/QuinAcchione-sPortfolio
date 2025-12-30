@@ -38,7 +38,7 @@ export default function EducationSection() {
       date: "May 2025",
       description: "Selected from competitive applicant pool to network with leading engineers and researchers at NASA JPL",
       category: "Award",
-      images: ["/achievements/nasa-jpl-1.png", "/achievements/nasa-jpl-2.png"],
+      images: ["/achievements/nasa-jpl-1.png", "/achievements/nasa-jpl-2.png", "/achievements/nasa-jpl-3.png", "/achievements/nasa-jpl-4.png", "/achievements/nasa-jpl-5.png"],
       detailedDescription: "Selected from a competitive applicant pool to participate in the NASA JPL-ERAU Academic Exchange Program in Pasadena, CA. Networked with leading engineers and researchers at NASA's Jet Propulsion Laboratory to gain insight into advanced space mission design, propulsion systems, and career pathways in aerospace innovation."
     },
     {
